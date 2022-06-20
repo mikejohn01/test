@@ -1,15 +1,16 @@
 package com.gashanin.fedor.controller;
 
-import com.gashanin.fedor.model.ValCurs;
 import com.gashanin.fedor.model.Valute;
 import com.gashanin.fedor.service.impl.ValuteServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(tags = "Currency", description = "Get currency course")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/valcurs")
@@ -17,6 +18,7 @@ public class ValCursController {
 
     private final ValuteServiceImpl valuteService;
 
+    @ApiOperation("Get currency course")
     @GetMapping("/get/{currency}")
     public ResponseEntity<Valute> getCurs(@PathVariable("currency") String currency,
                                                 @RequestParam( value="date", required = false) String year) {
