@@ -16,5 +16,4 @@ public class ValCurs {
     public String date;
     @Attribute(name = "name")
     public String name;
-//    public String text;
 }

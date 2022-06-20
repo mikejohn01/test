@@ -14,13 +14,27 @@ import retrofit2.converter.jaxb.JaxbConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Service
-public class ValuteServiceImpl  {
+public class ValuteServiceImpl implements ValuteService  {
 
     private final static String API_BASE_URL = "http://www.cbr.ru/scripts/XML_daily.asp/";
 
+    @Override
+    public Valute getValuteCource(String currency, String dateValCurs) {
+        try {
+            ValCurs valCurs = getValCurs(dateValCurs);
+            return getValute(valCurs, currency);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    };
+
+    @Override
     public ValCurs getValCurs(String dateValCurs) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
@@ -31,21 +45,18 @@ public class ValuteServiceImpl  {
 
         ValCursApi service = retrofit.create(ValCursApi.class);
         Call<ValCurs> callSync = service.getValCurs(dateValCurs);
-        ValCurs valCurs = null;
         try {
-            System.out.println("Вошлий в трай");
             Response<ValCurs> response = callSync.execute();
-            System.out.println("Response в message - " + response.message());
-            System.out.println("Response в errorBody - " + response.errorBody());
-            System.out.println("Response в headers - " + response.headers());
-            System.out.println("Response в body - " + response.body());
-            System.out.println("Response в code - " + response.code());
-            valCurs = response.body();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            return response.body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
         }
-
-        System.out.println(valCurs.toString());
-        return new ValCurs();
     }
+
+    @Override
+    public Valute getValute(ValCurs valCurs, String currency){
+        List<Valute> currencies = valCurs.getValute();
+        return currencies.stream().filter(c->c.getCharCode().equals(currency)).findFirst().get();
+    };
 }
