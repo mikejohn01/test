@@ -26,7 +26,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo buildApiInfo() {
-        return new ApiInfo("currency course",
+        return new ApiInfo("Курсы валют",
                 "REST API documentation",
                 "v1",
                 null,

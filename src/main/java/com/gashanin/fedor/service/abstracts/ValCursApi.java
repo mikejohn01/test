@@ -7,7 +7,5 @@ import retrofit2.http.Query;
 
 public interface ValCursApi {
     @GET(".")
-    Call<ValCurs> getValCurs(
-            @Query("date_req") String date
-    );
+    Call<ValCurs> getValCurs(@Query("date_req") String date);
 }

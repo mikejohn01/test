@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.jaxb.JaxbConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Service
@@ -24,7 +20,7 @@ public class ValuteServiceImpl implements ValuteService  {
     private final static String API_BASE_URL = "http://www.cbr.ru/scripts/XML_daily.asp/";
 
     @Override
-    public Valute getValuteCource(String currency, String dateValCurs) {
+    public Valute getValuteRate(String currency, String dateValCurs) {
         try {
             ValCurs valCurs = getValCurs(dateValCurs);
             return getValute(valCurs, currency);
