@@ -21,18 +21,17 @@ public class ValuteServiceImpl  {
 
     private final static String API_BASE_URL = "http://www.cbr.ru/scripts/XML_daily.asp/";
 
-    public ValCurs getValCurs() {
-//        ValCurs valCurs = null;
+    public ValCurs getValCurs(String dateValCurs) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(SimpleXmlConverterFactory.create())
-//                .addConverterFactory(JaxbConverterFactory.create())
                 .client(httpClient.build())
                 .build();
 
         ValCursApi service = retrofit.create(ValCursApi.class);
-        Call<ValCurs> callSync = service.getValCurs();
+        Call<ValCurs> callSync = service.getValCurs(dateValCurs);
+        ValCurs valCurs = null;
         try {
             System.out.println("Вошлий в трай");
             Response<ValCurs> response = callSync.execute();
@@ -41,12 +40,12 @@ public class ValuteServiceImpl  {
             System.out.println("Response в headers - " + response.headers());
             System.out.println("Response в body - " + response.body());
             System.out.println("Response в code - " + response.code());
-            ValCurs valCurs = response.body();
+            valCurs = response.body();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        System.out.println();
+        System.out.println(valCurs.toString());
         return new ValCurs();
     }
 }

@@ -19,6 +19,6 @@ public class Valute {
     @Element(name = "Name")
     public String name;
     @Element(name = "Value")
-    public Double value;
+    public String value;
 
 }
